@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공놀이 - 공부와 놀이를 이어주는 곳</title>
+
+  <!-- 본문 가독성을 위한 Pretendard 웹폰트 -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
+
+  <style>
+    /* 제목용 카페24 써라운드 폰트
+       (v2.0 폰트 파일을 같은 폴더에 두고 싶다면 아래 url 주석만 해제하면 됩니다) */
+    @font-face {
+      font-family: 'Cafe24Ssurround';
+      src:
+        /* url('./Cafe24Ssurround-v2.0.woff2') format('woff2'), */
+        url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --bg-page: #f6f5ff;
+      --surface: #ffffff;
+      --text-main: #1e293b;
+      --text-sub: #64748b;
+      --border-soft: #e2e8f0;
+
+      /* 브랜드 & 과목별 포인트 컬러 */
+      --brand-purple: #7c3aed;
+      --brand-purple-dark: #6d28d9;
+      --cat-korean: #f43f5e;
+      --cat-math: #3b82f6;
+      --cat-art: #9333ea;
+      --cat-play: #10b981;
+
+      --shadow-card: 0 10px 25px -5px rgba(109, 40, 217, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.05);
+      --shadow-hover: 0 18px 32px -8px rgba(109, 40, 217, 0.16), 0 8px 16px -6px rgba(15, 23, 42, 0.08);
+      --radius-card: 20px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Pretendard Variable', 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      background-color: var(--bg-page);
+      /* 듬성듬성 배치된 책·게임기·별 선화 벽지 패턴 (SVG 인라인) */
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 260 260'%3E%3Cg fill='none' stroke='%238b5cf6' stroke-opacity='0.11' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(28, 34) rotate(-10)'%3E%3Cpath d='M0 6c6-3 14-3 20 0v22c-6-3-14-3-20 0V6z'/%3E%3Cpath d='M20 6c6-3 14-3 20 0v22c-6-3-14-3-20 0V6z'/%3E%3C/g%3E%3Cg transform='translate(155, 130) rotate(12)'%3E%3Crect x='0' y='4' width='42' height='24' rx='10'/%3E%3Cpath d='M10 16h8M14 12v8'/%3E%3Ccircle cx='30' cy='14' r='1.5' fill='%238b5cf6' fill-opacity='0.14'/%3E%3Ccircle cx='34' cy='18' r='1.5' fill='%238b5cf6' fill-opacity='0.14'/%3E%3C/g%3E%3Cpath d='M195 44l2 5 5 2-5 2-2 5-2-5-5-2 5-2z'/%3E%3Cpath d='M62 190l2 4 4 2-4 2-2 4-2-4-4-2 4-2z'/%3E%3C/g%3E%3C/svg%3E");
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ==================== 상단 라벤더 그라데이션 배너 ==================== */
+    .hero-banner {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(120deg, #c084fc 0%, #818cf8 55%, #60a5fa 100%);
+      padding: 28px 24px;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.18);
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='180' viewBox='0 0 220 180'%3E%3Cg fill='none' stroke='%23ffffff' stroke-opacity='0.18' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg transform='translate(20, 24) rotate(-12)'%3E%3Cpath d='M0 6c6-3 14-3 20 0v22c-6-3-14-3-20 0V6z'/%3E%3Cpath d='M20 6c6-3 14-3 20 0v22c-6-3-14-3-20 0V6z'/%3E%3C/g%3E%3Cg transform='translate(130, 88) rotate(14)'%3E%3Crect x='0' y='4' width='42' height='24' rx='10'/%3E%3Cpath d='M10 16h8M14 12v8'/%3E%3Ccircle cx='30' cy='14' r='1.5' fill='%23ffffff' fill-opacity='0.22'/%3E%3Ccircle cx='34' cy='18' r='1.5' fill='%23ffffff' fill-opacity='0.22'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    /* 3층 컬러 블록 타이틀 */
+    .acrostic-title {
+      font-family: 'Cafe24Ssurround', 'Pretendard', sans-serif;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-weight: normal;
+    }
+
+    .acrostic-line {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      font-size: 1.55rem;
+      line-height: 1;
+      box-shadow: 0 4px 10px rgba(30, 27, 75, 0.18), inset 0 -2px 0 rgba(0, 0, 0, 0.12);
+      transition: transform 0.2s ease;
+    }
+
+    .acrostic-line:hover .tile {
+      transform: translateY(-2px) rotate(-3deg);
+    }
+
+    /* 교실 대형 TV에서도 선명하게 보이는 고대비 배색 */
+    .tile-gong {
+      background: #fde047;
+      color: #4c1d95;
+    }
+
+    .tile-nol {
+      background: #fb7185;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(136, 19, 55, 0.35);
+    }
+
+    .tile-i {
+      background: #10b981;
+      color: #ffffff;
+      text-shadow: 0 1px 3px rgba(6, 78, 59, 0.35);
+    }
+
+    .rest-text {
+      color: #ffffff;
+      font-size: 1.65rem;
+      letter-spacing: 0.02em;
+      text-shadow: 0 2px 8px rgba(49, 46, 129, 0.28);
+    }
+
+    /* ==================== 메인 레이아웃 (좌측 탭 + 우측 카드) ==================== */
+    .main-layout {
+      width: 100%;
+      max-width: 1200px;
+      margin: 32px auto 48px;
+      padding: 0 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      flex: 1;
+    }
+
+    /* 좌측 사이드바 */
+    .sidebar {
+      width: 190px;
+      flex-shrink: 0;
+      background: var(--surface);
+      border-radius: 22px;
+      padding: 16px 12px;
+      box-shadow: var(--shadow-card);
+      position: sticky;
+      top: 24px;
+    }
+
+    .category-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cat-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: background 0.18s ease, color 0.18s ease, transform 0.15s ease;
+    }
+
+    .cat-btn:hover {
+      background: #f1f5f9;
+    }
+
+    .cat-btn.active {
+      background: var(--brand-purple);
+      color: #ffffff;
+      box-shadow: 0 6px 14px rgba(124, 58, 237, 0.28);
+    }
+
+    .cat-count {
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #f1f5f9;
+      color: var(--text-sub);
+    }
+
+    .cat-btn.active .cat-count {
+      background: rgba(255, 255, 255, 0.24);
+      color: #ffffff;
+    }
+
+    /* 우측 카드 그리드 */
+    .content-area {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    /* 개별 앱 카드 */
+    .app-card {
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 16px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+
+    .app-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 14px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ede9fe, #e0f2fe);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      position: relative;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .thumb-fallback {
+      font-size: 3rem;
+      user-select: none;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .badge-cat-korean { background: #ffe4e6; color: #be123c; }
+    .badge-cat-math   { background: #dbeafe; color: #1d4ed8; }
+    .badge-cat-art    { background: #f3e8ff; color: #7e22ce; }
+    .badge-cat-play   { background: #d1fae5; color: #047857; }
+
+    .badge-static { background: #f1f5f9; color: #475569; }
+    .badge-render { background: #eef2ff; color: #4338ca; }
+
+    .card-title {
+      font-family: 'Cafe24Ssurround', 'Pretendard', sans-serif;
+      font-size: 1.25rem;
+      font-weight: normal;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      font-size: 0.92rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+      margin-bottom: 18px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      min-height: 3em;
+    }
+
+    .card-actions {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-family: inherit;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.12s ease, background 0.15s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-guide {
+      flex: 0 0 38%;
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .btn-guide:hover {
+      background: #e2e8f0;
+    }
+
+    .btn-start {
+      flex: 1;
+      color: #ffffff;
+    }
+
+    .btn-start:hover {
+      filter: brightness(1.06);
+    }
+
+    .btn-cat-korean { background: var(--cat-korean); }
+    .btn-cat-math   { background: var(--cat-math); }
+    .btn-cat-art    { background: var(--cat-art); }
+    .btn-cat-play   { background: var(--cat-play); }
+
+    .btn-primary {
+      background: var(--brand-purple);
+      color: #ffffff;
+      padding: 12px 20px;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-purple-dark);
+    }
+
+    .btn-secondary {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 12px 18px;
+    }
+
+    .btn-secondary:hover {
+      background: #e2e8f0;
+    }
+
+    /* ==================== 준비 중 (빈 카테고리) ==================== */
+    .empty-state {
+      grid-column: 1 / -1;
+      background: var(--surface);
+      border-radius: var(--radius-card);
+      padding: 56px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h2 {
+      font-family: 'Cafe24Ssurround', 'Pretendard', sans-serif;
+      font-size: 1.4rem;
+      font-weight: normal;
+      margin-bottom: 10px;
+    }
+
+    .empty-state p {
+      color: var(--text-sub);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    /* ==================== 모달 공통 ==================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.52);
+      backdrop-filter: blur(3px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--surface);
+      width: 100%;
+      max-width: 500px;
+      border-radius: 22px;
+      padding: 28px 26px 24px;
+      position: relative;
+      box-shadow: 0 24px 48px rgba(15, 23, 42, 0.25);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      border: none;
+      background: #f1f5f9;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      font-size: 1.35rem;
+      color: #64748b;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      background: #e2e8f0;
+    }
+
+    .modal-badge-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .modal-title {
+      font-family: 'Cafe24Ssurround', 'Pretendard', sans-serif;
+      font-size: 1.45rem;
+      font-weight: normal;
+      margin-bottom: 14px;
+    }
+
+    /* 이용 방법 모달 내부 */
+    .guide-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .guide-chip {
+      background: #f8fafc;
+      border: 1px solid var(--border-soft);
+      border-radius: 10px;
+      padding: 6px 11px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .guide-section h3 {
+      font-size: 0.98rem;
+      margin-bottom: 10px;
+      color: var(--text-main);
+    }
+
+    .guide-steps {
+      padding-left: 20px;
+      margin-bottom: 18px;
+      color: #334155;
+      font-size: 0.94rem;
+      line-height: 1.65;
+    }
+
+    .guide-steps li {
+      margin-bottom: 6px;
+    }
+
+    .guide-tip-box {
+      background: #f5f3ff;
+      border-left: 4px solid var(--brand-purple);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+      line-height: 1.55;
+      color: #3b0764;
+    }
+
+    .guide-tip-box p {
+      margin-top: 4px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    /* Render 서버 깨우기 모달 */
+    .wakeup-box {
+      text-align: center;
+    }
+
+    .wakeup-icon {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+    }
+
+    .wakeup-desc {
+      font-size: 0.94rem;
+      color: var(--text-sub);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 12px;
+      background: #ede9fe;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #8b5cf6, #3b82f6);
+      border-radius: 999px;
+      transition: width 0.35s ease;
+    }
+
+    .wakeup-status {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--brand-purple);
+      margin-bottom: 20px;
+    }
+
+    .wakeup-box .modal-actions {
+      justify-content: center;
+    }
+
+    /* ==================== 푸터 ==================== */
+    .site-footer {
+      text-align: center;
+      padding: 24px 16px 32px;
+      color: var(--text-sub);
+      font-size: 0.88rem;
+      border-top: 1px solid rgba(139, 92, 246, 0.12);
+    }
+
+    .footer-brand {
+      font-weight: 700;
+      color: #475569;
+      margin-bottom: 4px;
+    }
+
+    .footer-links a {
+      color: var(--brand-purple);
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 6px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==================== 반응형 브레이크포인트 ==================== */
+    /* 1100px 이하(노트북·태블릿 가로): 버튼 줄바꿈 방지를 위해 2열 전환 */
+    @media (max-width: 1100px) {
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    /* 768px 이하(태블릿 세로·모바일): 좌측 탭을 상단 가로 스크롤 탭으로 전환 */
+    @media (max-width: 768px) {
+      .hero-banner {
+        padding: 20px 18px;
+      }
+
+      .tile {
+        width: 36px;
+        height: 36px;
+        font-size: 1.25rem;
+        border-radius: 10px;
+      }
+
+      .rest-text {
+        font-size: 1.35rem;
+      }
+
+      .main-layout {
+        flex-direction: column;
+        margin-top: 18px;
+        padding: 0 16px;
+        gap: 18px;
+      }
+
+      .sidebar {
+        width: 100%;
+        position: static;
+        padding: 10px;
+        border-radius: 16px;
+      }
+
+      .category-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 8px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .cat-btn {
+        width: auto;
+        flex-shrink: 0;
+        padding: 9px 14px;
+        gap: 6px;
+        font-size: 0.92rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 상단 라벤더 그라데이션 배너 -->
+  <header class="hero-banner">
+    <div class="hero-inner">
+      <h1 class="acrostic-title" aria-label="공부와 놀이를 이어주는 곳, 공놀이">
+        <span class="acrostic-line">
+          <span class="tile tile-gong">공</span>
+          <span class="rest-text">부와</span>
+        </span>
+        <span class="acrostic-line">
+          <span class="tile tile-nol">놀</span>
+          <span class="rest-text">이를</span>
+        </span>
+        <span class="acrostic-line">
+          <span class="tile tile-i">이</span>
+          <span class="rest-text">어주는 곳</span>
+        </span>
+      </h1>
+    </div>
+  </header>
+
+  <!-- 메인 콘텐츠 (좌측 사이드바 + 우측 카드 그리드) -->
+  <main class="main-layout">
+    <aside class="sidebar" aria-label="과목 카테고리">
+      <nav class="category-nav" id="categoryNav"></nav>
+    </aside>
+
+    <section class="content-area">
+      <div class="card-grid" id="cardGrid"></div>
+    </section>
+  </main>
+
+  <!-- 하단 푸터 -->
+  <footer class="site-footer">
+    <p class="footer-brand">공놀이 · 공부와 놀이를 이어주는 교실 웹앱 모음</p>
+    <p class="footer-links" id="footerLinks"></p>
+  </footer>
+
+  <!-- 모달 1: 이용 방법 (교사용 안내) -->
+  <div class="modal-backdrop" id="guideModal" aria-hidden="true">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="guideModalTitle">
+      <button class="modal-close" data-close-modal="guideModal" aria-label="닫기">&times;</button>
+      <div class="modal-badge-row" id="guideModalBadges"></div>
+      <h2 class="modal-title" id="guideModalTitle">앱 이름</h2>
+      <div class="guide-chips" id="guideChips"></div>
+      <div class="guide-section">
+        <h3>수업 진행 순서</h3>
+        <ol class="guide-steps" id="guideSteps"></ol>
+      </div>
+      <div class="guide-tip-box">
+        <strong>💡 선생님 팁</strong>
+        <p id="guideTip"></p>
+      </div>
+      <div class="modal-actions" id="guideActions"></div>
+    </div>
+  </div>
+
+  <!-- 모달 2: Render 서버 자동 깨우기 -->
+  <div class="modal-backdrop" id="wakeupModal" aria-hidden="true">
+    <div class="modal-box wakeup-box" role="dialog" aria-modal="true" aria-labelledby="wakeupTitle">
+      <button class="modal-close" id="wakeupCloseBtn" aria-label="닫기">&times;</button>
+      <div class="wakeup-icon" id="wakeupIcon">🚀</div>
+      <h2 class="modal-title" id="wakeupTitle">서버를 깨우고 있어요</h2>
+      <p class="wakeup-desc" id="wakeupDesc">
+        잠시 쉬고 있던 무료 서버를 깨우는 중입니다.<br />
+        최초 접속 시 약 30~50초 정도 걸릴 수 있어요.
+      </p>
+      <div class="progress-track">
+        <div class="progress-bar" id="wakeupProgressBar"></div>
+      </div>
+      <p class="wakeup-status" id="wakeupStatusText">서버 응답을 기다리는 중...</p>
+      <div class="modal-actions" id="wakeupActions"></div>
+    </div>
+  </div>
+
+  <script>
+    /* =====================================================================
+       [여기만 수정하세요] 공놀이 사이트 설정 및 웹앱 목록
+       - 새 앱을 추가할 때는 아래 APPS_DATA 배열에 { ... } 블록을 복사해 넣으세요.
+       - 썸네일 이미지는 index.html과 같은 폴더에 올린 뒤 './파일명.png'로 적으면 됩니다.
+         (비워두면 fallbackEmoji 이모지가 깔끔하게 표시됩니다.)
+       ===================================================================== */
+
+    const SITE_CONFIG = {
+      // 교사 커뮤니티용 오류 제보/문의 링크 (구글 폼, 패들릿 등). 비워두면 링크 문구가 숨겨집니다.
+      feedbackUrl: '',
+      feedbackLabel: '오류 제보 및 의견 남기기'
+    };
+
+    const CATEGORIES = [
+      { id: 'all',    label: '전체' },
+      { id: 'korean', label: '국어' },
+      { id: 'math',   label: '수학' },
+      { id: 'art',    label: '미술' },
+      { id: 'play',   label: '놀이' }
+    ];
+
+    const APPS_DATA = [
+      {
+        id: 'math-racing',
+        title: '수학 레이싱',
+        category: 'math', // 'korean' | 'math' | 'art' | 'play'
+        hosting: 'render', // 'render' (서버 깨우기 모달 사용) | 'static' (즉시 새 탭 열기)
+        url: 'https://여기에-수학레이싱-주소를-넣으세요.onrender.com',
+        thumbnail: '', // 예: './thumb-math.png' (비워두면 이모지 표시)
+        fallbackEmoji: '🏎️',
+        description: '난이도별 톨게이트 문제를 풀고 부스터로 달려가는 실시간 수학 레이싱 게임입니다.',
+        guide: {
+          grade: '초등 5~6학년',
+          duration: '15~20분',
+          device: '태블릿 가로 · PC 권장',
+          steps: [
+            '선생님이 먼저 [시작하기]를 눌러 서버를 깨우고 방을 생성합니다.',
+            '학생들은 태블릿으로 접속해 방 코드와 이름을 입력합니다.',
+            '제한 시간 동안 톨게이트 문제를 풀어 결승선까지 완주합니다.'
+          ],
+          tip: '수업 시작 1분 전에 선생님이 먼저 한 번 접속해 서버를 깨워두면, 학생들은 대기 시간 없이 바로 입장할 수 있습니다.',
+          teacherUrl: '' // 교사용 관리 페이지 주소가 따로 있다면 입력 (비워두면 버튼 숨김)
+        }
+      },
+      {
+        id: 'virtual-gallery',
+        title: '우리반 3D 미술관',
+        category: 'art',
+        hosting: 'render', // 서버형(Render)이면 'render', GitHub Pages 정적 웹앱이면 'static'
+        url: 'https://여기에-미술관-주소를-넣으세요.onrender.com',
+        healthUrl: '', // (선택) CORS가 허용된 /health 같은 주소. 넣으면 서버 상태를 정확히 확인합니다.
+        thumbnail: '',
+        fallbackEmoji: '🖼️',
+        description: '우리 반 친구들의 작품을 3D 가상 전시관에 걸고 1인칭 시점으로 자유롭게 감상해요.',
+        guide: {
+          grade: '초등 3~6학년',
+          duration: '20~30분',
+          device: '태블릿 · PC 모두 가능',
+          steps: [
+            '선생님이 먼저 [시작하기]를 눌러 서버를 깨우고 전시관을 엽니다.',
+            '화면 조이스틱 또는 방향키로 전시관을 이동하며 작품을 감상합니다.',
+            '작품을 클릭해 크게 보거나 친구들과 감상 소감을 나눕니다.'
+          ],
+          tip: '수업 시작 1분 전에 선생님이 먼저 한 번 접속해 서버를 깨워두면, 학생들은 대기 없이 바로 입장할 수 있습니다.',
+          teacherUrl: ''
+        }
+      },
+      {
+        id: 'classroom-game',
+        title: '교실 추리 게임',
+        category: 'play',
+        hosting: 'render',
+        url: 'https://여기에-놀이게임-주소를-넣으세요.onrender.com',
+        thumbnail: '',
+        fallbackEmoji: '🕵️',
+        description: '친구들과 실시간으로 소통하며 그림을 그리고 스파이를 찾아내는 교실 참여형 놀이입니다.',
+        guide: {
+          grade: '초등 4~6학년',
+          duration: '15~25분',
+          device: '태블릿 · 스마트폰 · PC',
+          steps: [
+            '선생님이 방을 만들고 생성된 참여 코드를 칠판이나 TV에 띄웁니다.',
+            '학생들이 코드로 입장해 제시어를 확인하고 순서대로 참여합니다.',
+            '제한 시간 내에 투표를 진행해 숨은 스파이를 찾아냅니다.'
+          ],
+          tip: '이미 서버가 깨어 있는 상태에서 다른 학생이 접속하면 1초 만에 바로 연결되며, 기존 접속자는 튕기지 않습니다.',
+          teacherUrl: ''
+        }
+      }
+    ];
+
+    /* =====================================================================
+       아래부터는 화면 동작 코드입니다 (수정하지 않아도 정상 작동합니다)
+       ===================================================================== */
+
+    let currentCategory = 'all';
+    let wakeupAbortController = null;
+    let wakeupTimerId = null;
+
+    const categoryNav = document.getElementById('categoryNav');
+    const cardGrid = document.getElementById('cardGrid');
+    const footerLinks = document.getElementById('footerLinks');
+
+    // 모달 요소
+    const guideModal = document.getElementById('guideModal');
+    const wakeupModal = document.getElementById('wakeupModal');
+    const wakeupIcon = document.getElementById('wakeupIcon');
+    const wakeupTitle = document.getElementById('wakeupTitle');
+    const wakeupDesc = document.getElementById('wakeupDesc');
+    const wakeupProgressBar = document.getElementById('wakeupProgressBar');
+    const wakeupStatusText = document.getElementById('wakeupStatusText');
+    const wakeupActions = document.getElementById('wakeupActions');
+    const wakeupCloseBtn = document.getElementById('wakeupCloseBtn');
+
+    function getCategoryLabel(catId) {
+      const found = CATEGORIES.find((c) => c.id === catId);
+      return found ? found.label : catId;
+    }
+
+    function isPlaceholderUrl(url) {
+      return !url || url.includes('여기에-') || url.includes('your-');
+    }
+
+    function renderFooter() {
+      if (SITE_CONFIG.feedbackUrl) {
+        footerLinks.innerHTML = `수업 중 오류 제보나 의견이 있으신가요? <a href="${SITE_CONFIG.feedbackUrl}" target="_blank" rel="noopener noreferrer">${SITE_CONFIG.feedbackLabel}</a>`;
+      } else {
+        footerLinks.textContent = '전국 선생님과 학생이 함께 즐기는 교실 웹앱 허브';
+      }
+    }
+
+    function renderSidebar() {
+      categoryNav.innerHTML = CATEGORIES.map((cat) => {
+        const count = cat.id === 'all'
+          ? APPS_DATA.length
+          : APPS_DATA.filter((app) => app.category === cat.id).length;
+        const isActive = currentCategory === cat.id;
+
+        return `
+          <button class="cat-btn ${isActive ? 'active' : ''}" data-cat="${cat.id}" type="button">
+            <span>${cat.label}</span>
+            ${count > 0 ? `<span class="cat-count">${count}</span>` : ''}
+          </button>
+        `;
+      }).join('');
+
+      categoryNav.querySelectorAll('.cat-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          currentCategory = btn.dataset.cat;
+          renderSidebar();
+          renderCards();
+        });
+      });
+    }
+
+    function renderCards() {
+      const filtered = currentCategory === 'all'
+        ? APPS_DATA
+        : APPS_DATA.filter((app) => app.category === currentCategory);
+
+      if (filtered.length === 0) {
+        const label = getCategoryLabel(currentCategory);
+        cardGrid.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">🛠️</div>
+            <h2>새로운 ${label} 공놀이를 준비하고 있어요!</h2>
+            <p>곧 재미있는 ${label} 웹앱으로 찾아올게요.<br />지금 바로 즐길 수 있는 다른 공놀이도 구경해 보세요.</p>
+            <button class="btn btn-primary" type="button" id="goAllBtn">전체 앱 보러가기</button>
+          </div>
+        `;
+        document.getElementById('goAllBtn').addEventListener('click', () => {
+          currentCategory = 'all';
+          renderSidebar();
+          renderCards();
+        });
+        return;
+      }
+
+      cardGrid.innerHTML = filtered.map((app) => {
+        const catLabel = getCategoryLabel(app.category);
+        const hostBadge = app.hosting === 'render'
+          ? `<span class="badge badge-render">🚀 서버 연결</span>`
+          : `<span class="badge badge-static">⚡ 바로 시작</span>`;
+
+        const thumbHtml = app.thumbnail
+          ? `<img src="${app.thumbnail}" alt="${app.title} 썸네일" onerror="this.parentElement.innerHTML='<span class=\\'thumb-fallback\\'>${app.fallbackEmoji || '🎮'}</span>';" />`
+          : `<span class="thumb-fallback">${app.fallbackEmoji || '🎮'}</span>`;
+
+        return `
+          <article class="app-card">
+            <div class="card-thumb">${thumbHtml}</div>
+            <div class="badge-row">
+              <span class="badge badge-cat-${app.category}">${catLabel}</span>
+              ${hostBadge}
+            </div>
+            <h2 class="card-title">${app.title}</h2>
+            <p class="card-desc">${app.description}</p>
+            <div class="card-actions">
+              <button class="btn btn-guide" type="button" data-action="guide" data-id="${app.id}">이용 방법</button>
+              <button class="btn btn-start btn-cat-${app.category}" type="button" data-action="start" data-id="${app.id}">시작하기</button>
+            </div>
+          </article>
+        `;
+      }).join('');
+
+      cardGrid.querySelectorAll('button[data-action]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const app = APPS_DATA.find((item) => item.id === btn.dataset.id);
+          if (!app) return;
+          if (btn.dataset.action === 'guide') {
+            openGuideModal(app);
+          } else {
+            launchApp(app);
+          }
+        });
+      });
+    }
+
+    /* ==================== 이용 방법 모달 ==================== */
+    function openGuideModal(app) {
+      const catLabel = getCategoryLabel(app.category);
+      const hostBadge = app.hosting === 'render'
+        ? `<span class="badge badge-render">🚀 첫 접속 시 서버 깨우기</span>`
+        : `<span class="badge badge-static">⚡ 대기 없이 바로 시작</span>`;
+
+      document.getElementById('guideModalBadges').innerHTML = `
+        <span class="badge badge-cat-${app.category}">${catLabel}</span>
+        ${hostBadge}
+      `;
+      document.getElementById('guideModalTitle').textContent = app.title;
+
+      const chips = [
+        app.guide.grade ? `🎒 ${app.guide.grade}` : '',
+        app.guide.duration ? `⏱️ ${app.guide.duration}` : '',
+        app.guide.device ? `💻 ${app.guide.device}` : ''
+      ].filter(Boolean);
+
+      document.getElementById('guideChips').innerHTML = chips
+        .map((text) => `<span class="guide-chip">${text}</span>`)
+        .join('');
+
+      document.getElementById('guideSteps').innerHTML = app.guide.steps
+        .map((step) => `<li>${step}</li>`)
+        .join('');
+
+      document.getElementById('guideTip').textContent = app.guide.tip;
+
+      const actionsEl = document.getElementById('guideActions');
+      actionsEl.innerHTML = '';
+
+      if (app.guide.teacherUrl) {
+        const teacherLink = document.createElement('a');
+        teacherLink.className = 'btn btn-secondary';
+        teacherLink.href = app.guide.teacherUrl;
+        teacherLink.target = '_blank';
+        teacherLink.rel = 'noopener noreferrer';
+        teacherLink.textContent = '교사용 화면 열기';
+        actionsEl.appendChild(teacherLink);
+      }
+
+      const startBtn = document.createElement('button');
+      startBtn.className = `btn btn-cat-${app.category}`;
+      startBtn.style.color = '#ffffff';
+      startBtn.style.padding = '12px 20px';
+      startBtn.type = 'button';
+      startBtn.textContent = '바로 시작하기';
+      startBtn.addEventListener('click', () => {
+        closeModal(guideModal);
+        launchApp(app);
+      });
+      actionsEl.appendChild(startBtn);
+
+      openModal(guideModal);
+    }
+
+    /* ==================== 앱 실행 & Render 자동 깨우기 ==================== */
+    function launchApp(app) {
+      if (isPlaceholderUrl(app.url)) {
+        openPlaceholderNotice(app);
+        return;
+      }
+
+      // GitHub Pages 등 정적 웹앱은 즉시 새 탭으로 이동
+      if (app.hosting !== 'render') {
+        window.open(app.url, '_blank', 'noopener,noreferrer');
+        return;
+      }
+
+      // Render 웹앱은 서버 깨우기 모달 실행
+      startRenderWakeup(app);
+    }
+
+    function openPlaceholderNotice(app) {
+      resetWakeupState();
+      wakeupIcon.textContent = '🔧';
+      wakeupTitle.textContent = `${app.title} (예시 주소)`;
+      wakeupDesc.innerHTML = '아직 실제 웹앱 주소가 연결되지 않은 예시 상태입니다.<br /><code>index.html</code>의 <strong>APPS_DATA</strong>에서 실제 주소를 입력해 주세요.';
+      wakeupProgressBar.style.width = '100%';
+      wakeupStatusText.textContent = '주소 설정 후 정상적으로 연결됩니다.';
+      wakeupActions.innerHTML = `<button class="btn btn-primary" type="button" id="wakeupOkBtn">확인</button>`;
+      document.getElementById('wakeupOkBtn').addEventListener('click', closeWakeupModal);
+      openModal(wakeupModal);
+    }
+
+    function startRenderWakeup(app) {
+      resetWakeupState();
+      openModal(wakeupModal);
+
+      wakeupIcon.textContent = '🚀';
+      wakeupTitle.textContent = `${app.title} 서버 연결 중`;
+      wakeupDesc.innerHTML = '서버 상태를 확인하고 잠들어 있다면 자동으로 깨웁니다.<br />이미 켜져 있다면 1초 만에 바로 열려요.';
+      wakeupProgressBar.style.width = '8%';
+      wakeupStatusText.textContent = '서버에 신호를 보내는 중... (0초)';
+
+      wakeupActions.innerHTML = `
+        <button class="btn btn-secondary" type="button" id="wakeupCancelBtn">취소</button>
+        <a class="btn btn-secondary" href="${app.url}" target="_blank" rel="noopener noreferrer">직접 열기</a>
+      `;
+      document.getElementById('wakeupCancelBtn').addEventListener('click', closeWakeupModal);
+
+      const startTime = Date.now();
+      let elapsed = 0;
+
+      // 1초마다 경과 시간과 진행 바 부드럽게 업데이트 (최대 90%까지)
+      wakeupTimerId = setInterval(() => {
+        elapsed = Math.floor((Date.now() - startTime) / 1000);
+        const progress = Math.min(90, 10 + elapsed * 1.8);
+        wakeupProgressBar.style.width = `${progress}%`;
+
+        if (elapsed < 5) {
+          wakeupStatusText.textContent = `서버 응답을 확인하고 있어요... (${elapsed}초)`;
+        } else {
+          wakeupStatusText.textContent = `잠들어 있던 서버를 깨우고 있어요... (${elapsed}초 / 보통 30~50초 소요)`;
+        }
+      }, 1000);
+
+      wakeupAbortController = new AbortController();
+      const timeoutId = setTimeout(() => {
+        if (wakeupAbortController) wakeupAbortController.abort();
+      }, 75000);
+
+      // mode: 'no-cors'를 사용하면 Render 서버 코드를 수정하지 않아도
+      // 깨어 있을 땐 즉시, 잠들어 있을 땐 부팅 완료 시점에 응답이 도착합니다.
+      pingServer(app, wakeupAbortController.signal)
+        .then(() => {
+          clearTimeout(timeoutId);
+          stopWakeupTimer();
+          const tookSec = Number(((Date.now() - startTime) / 1000).toFixed(1));
+          wakeupIcon.textContent = '✅';
+          wakeupTitle.textContent = '서버 준비 완료!';
+          wakeupDesc.innerHTML = tookSec < 3
+            ? '서버가 이미 깨어 있어요!<br />아래 버튼을 눌러 바로 입장하세요.'
+            : `서버가 성공적으로 깨어났어요! (${tookSec}초 소요)<br />아래 버튼을 눌러 입장하세요.`;
+          wakeupProgressBar.style.width = '100%';
+          wakeupStatusText.textContent = '팝업 차단을 피하기 위해 버튼으로 새 탭을 엽니다.';
+          wakeupActions.innerHTML = `
+            <button class="btn btn-secondary" type="button" id="wakeupDoneCloseBtn">닫기</button>
+            <a class="btn btn-primary" href="${app.url}" target="_blank" rel="noopener noreferrer" id="wakeupEnterBtn">입장하기 (새 탭)</a>
+          `;
+          document.getElementById('wakeupDoneCloseBtn').addEventListener('click', closeWakeupModal);
+          document.getElementById('wakeupEnterBtn').addEventListener('click', () => {
+            setTimeout(closeWakeupModal, 300);
+          });
+        })
+        .catch((err) => {
+          clearTimeout(timeoutId);
+          stopWakeupTimer();
+          if (err.name === 'AbortError' && !wakeupModal.classList.contains('open')) {
+            return; // 사용자가 취소 버튼을 눌러 닫은 경우
+          }
+          wakeupIcon.textContent = '⚠️';
+          wakeupTitle.textContent = '응답이 지연되고 있어요';
+          wakeupDesc.innerHTML = '학교 네트워크 환경이나 서버 부팅 지연으로 자동 확인이 늦어졌습니다.<br />아래 버튼으로 직접 접속해 확인해 보세요.';
+          wakeupProgressBar.style.width = '100%';
+          wakeupStatusText.textContent = '직접 열기를 눌러도 서버 깨우기는 계속 진행됩니다.';
+          wakeupActions.innerHTML = `
+            <button class="btn btn-secondary" type="button" id="wakeupRetryCloseBtn">닫기</button>
+            <a class="btn btn-primary" href="${app.url}" target="_blank" rel="noopener noreferrer">직접 열기 (새 탭)</a>
+          `;
+          document.getElementById('wakeupRetryCloseBtn').addEventListener('click', closeWakeupModal);
+        });
+    }
+
+    /* 서버 상태 확인
+       - app.healthUrl 이 있으면: CORS 요청으로 응답 상태(res.ok)를 확인하고, 아니면 3초 간격으로 재시도합니다.
+       - 없으면: 기존 no-cors 방식 (응답 상태는 알 수 없고, 응답이 도착하면 깨어난 것으로 봅니다). */
+    function sleepWithSignal(ms, signal) {
+      return new Promise((resolve, reject) => {
+        if (signal.aborted) return reject(new DOMException('Aborted', 'AbortError'));
+        const id = setTimeout(() => {
+          signal.removeEventListener('abort', onAbort);
+          resolve();
+        }, ms);
+        const onAbort = () => {
+          clearTimeout(id);
+          reject(new DOMException('Aborted', 'AbortError'));
+        };
+        signal.addEventListener('abort', onAbort, { once: true });
+      });
+    }
+
+    async function pingServer(app, signal) {
+      if (!app.healthUrl) {
+        await fetch(app.url, { method: 'GET', mode: 'no-cors', cache: 'no-store', signal });
+        return;
+      }
+      while (true) {
+        try {
+          const res = await fetch(app.healthUrl, { method: 'GET', cache: 'no-store', signal });
+          if (res.ok) return;
+        } catch (err) {
+          if (err.name === 'AbortError') throw err;
+          // 부팅 중 연결 오류는 무시하고 재시도
+        }
+        await sleepWithSignal(3000, signal);
+      }
+    }
+
+    function stopWakeupTimer() {
+      if (wakeupTimerId) {
+        clearInterval(wakeupTimerId);
+        wakeupTimerId = null;
+      }
+    }
+
+    function resetWakeupState() {
+      stopWakeupTimer();
+      if (wakeupAbortController) {
+        wakeupAbortController.abort();
+        wakeupAbortController = null;
+      }
+    }
+
+    function closeWakeupModal() {
+      resetWakeupState();
+      closeModal(wakeupModal);
+    }
+
+    /* ==================== 모달 열기/닫기 공통 ==================== */
+    let lastFocusedEl = null;
+
+    function openModal(modalEl) {
+      if (!document.querySelector('.modal-backdrop.open')) {
+        lastFocusedEl = document.activeElement;
+      }
+      modalEl.classList.add('open');
+      modalEl.setAttribute('aria-hidden', 'false');
+      const closeBtn = modalEl.querySelector('.modal-close');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal(modalEl) {
+      modalEl.classList.remove('open');
+      modalEl.setAttribute('aria-hidden', 'true');
+      if (!document.querySelector('.modal-backdrop.open') && lastFocusedEl && document.contains(lastFocusedEl)) {
+        lastFocusedEl.focus();
+        lastFocusedEl = null;
+      }
+    }
+
+    // 모달이 열려 있는 동안 Tab 키 포커스가 모달 밖으로 나가지 않게 가둡니다.
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab') return;
+      const openModalEl = document.querySelector('.modal-backdrop.open');
+      if (!openModalEl) return;
+      const focusables = openModalEl.querySelectorAll('button, a[href]');
+      if (!focusables.length) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+      if (!openModalEl.contains(document.activeElement)) {
+        e.preventDefault();
+        first.focus();
+      } else if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+
+    document.querySelectorAll('[data-close-modal]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = document.getElementById(btn.dataset.closeModal);
+        if (target) closeModal(target);
+      });
+    });
+
+    wakeupCloseBtn.addEventListener('click', closeWakeupModal);
+
+    [guideModal, wakeupModal].forEach((modalEl) => {
+      modalEl.addEventListener('click', (e) => {
+        if (e.target === modalEl) {
+          if (modalEl === wakeupModal) closeWakeupModal();
+          else closeModal(modalEl);
+        }
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (guideModal.classList.contains('open')) closeModal(guideModal);
+        if (wakeupModal.classList.contains('open')) closeWakeupModal();
+      }
+    });
+
+    // 초기 렌더링
+    renderFooter();
+    renderSidebar();
+    renderCards();
+  </script>
+</body>
+</html>
