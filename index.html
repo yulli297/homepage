@@ -761,6 +761,52 @@
 
     const APPS_DATA = [
       {
+        id: 'dungeon-card',
+        title: '던전 카드 모험',
+        category: 'math',
+        hosting: 'render',
+        url: 'https://class-game-hub.onrender.com/card/',
+        thumbnail: './thumb-card.jpg',
+        fallbackEmoji: '🃏',
+        description: '6학년 수학 문제를 풀며 카드를 모아 덱을 만들고, 친구와 1:1 카드 대결을 펼치는 던전 모험 게임입니다.',
+        guide: {
+          grade: '초등 6학년 (1·2학기 12단원)',
+          duration: '40분 (1차시)',
+          device: '태블릿 가로 · PC (1인 1기기)',
+          steps: [
+            '선생님이 [교사용 화면 열기]에서 단원을 고르고 학급 이름과 학급 비밀번호를 정해 반을 엽니다.',
+            '학생들은 QR 코드를 찍거나 [시작하기]에서 우리 반을 찾아 학급 비밀번호와 번호로 들어옵니다.',
+            '문제를 풀 때마다 카드 3장 중 1장을 골라 18장 덱을 만듭니다.',
+            '덱이 완성되면 [대결 찾기]로 친구와 1:1 카드 대결을 하고, 끝나면 카드 5장을 남기고 다시 문제를 풉니다.'
+          ],
+          tip: '수업 1~2분 전에 교사용 화면에 먼저 들어가 서버를 깨워 두세요. 교사 화면 접속 비밀번호는 공용 비밀번호를 사용하고, 아무도 없는 반은 1시간 뒤 자동으로 닫힙니다.',
+          teacherUrl: 'https://class-game-hub.onrender.com/card/teacher'
+        }
+      },
+      {
+        id: 'chosung-quiz',
+        title: '초성 퀴즈',
+        category: 'korean',
+        hosting: 'render',
+        url: 'https://class-game-hub.onrender.com/chosung/',
+        thumbnail: './thumb-chosung.jpg',
+        fallbackEmoji: '🔤',
+        description: '제시된 초성에 맞는 낱말을 차례로 입력하는 실시간 초성 퀴즈입니다. 표준국어대사전에 있는 낱말만 정답으로 인정해요.',
+        guide: {
+          grade: '초등 3~6학년',
+          duration: '15~25분',
+          device: '태블릿 · PC (1인 1기기)',
+          steps: [
+            '선생님이 [교사용 화면 열기]에서 학급 이름과 학급 비밀번호를 정해 반을 열고, 개인전·모둠 대항전과 정답 낱말 범위(전체·고유어·한자어)를 고릅니다.',
+            '학생들은 QR 코드를 찍거나 [시작하기]에서 우리 반을 찾아 학급 비밀번호와 번호로 들어옵니다.',
+            '선생님이 게임을 시작하면 순서대로 초성에 맞는 낱말을 제한 시간(개인전 10초, 모둠 대항전 15초) 안에 입력합니다.',
+            '5라운드 동안 두 번 탈락하면 그 판은 끝나고, 친구들 게임을 구경하며 다음 판을 기다립니다.'
+          ],
+          tip: '게임 전에 교사용 화면의 [사전 연결 테스트]로 사전이 잘 연결되는지 확인해 두세요. 신조어·방언·옛말은 정답으로 인정되지 않습니다.',
+          teacherUrl: 'https://class-game-hub.onrender.com/chosung/teacher'
+        }
+      },
+      {
         id: 'math-racing',
         title: '수학 레이싱',
         category: 'math', // 'korean' | 'math' | 'art' | 'play'
